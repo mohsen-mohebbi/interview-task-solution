@@ -1,0 +1,36 @@
+<nz-card *ngIf="!loading; else loadingBlock">
+  <div class="top">
+    <div class="left">
+      <h2>{{ event?.title }}</h2>
+      <div class="small-muted">{{ event?.description }}</div>
+    </div>
+    <div class="actions">
+      <button nz-button nzType="default" (click)="goEdit()">Edit</button>
+      <button nz-button nzType="primary" (click)="copyPublicLink()" [disabled]="!event?.isPublic">Copy Public Link</button>
+      <button nz-button nzType="default" (click)="deleteEvent()">Delete</button>
+    </div>
+  </div>
+
+  <!-- <nz-image *ngIf="event?.coverImage" [nzSrc]="event?.coverImage" nzWidth="100%" [nzPreview]="true"></nz-image> -->
+
+  <nz-descriptions nzTitle="Event details" nzBordered>
+    <nz-descriptions-item nzTitle="Date">
+      {{ event?.startAt | date: 'full' }} ({{ event?.timezone || 'UTC' }})
+    </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Venue">
+      {{ event?.venue?.name || '-' }} <div class="small-muted">{{ event?.venue?.address1 }}</div>
+    </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Visibility">
+      <nz-tag [nzColor]="event?.isPublic ? 'green' : 'red'">{{ event?.isPublic ? 'Public' : 'Private' }}</nz-tag>
+    </nz-descriptions-item>
+    <nz-descriptions-item nzTitle="Description" [nzSpan]="3">
+      <div>{{ event?.description || '-' }}</div>
+    </nz-descriptions-item>
+  </nz-descriptions>
+</nz-card>
+
+<ng-template #loadingBlock>
+  <div class="loading">
+    <nz-spin nzSize="large" nzTip="Loading..."></nz-spin>
+  </div>
+</ng-template>

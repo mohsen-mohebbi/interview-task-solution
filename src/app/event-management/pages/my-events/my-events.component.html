@@ -1,0 +1,61 @@
+<nz-card nzTitle="My Events" class="events-card">
+  <div class="toolbar">
+    <div class="left-tools">
+      <input nz-input placeholder="Search..." [formControl]="search" class="search-input" />
+      <nz-select class="filter-select" [formControl]="filter">
+        <nz-option nzValue="all" nzLabel="All"></nz-option>
+        <nz-option nzValue="public" nzLabel="Public"></nz-option>
+        <nz-option nzValue="private" nzLabel="Private"></nz-option>
+      </nz-select>
+    </div>
+    <button nz-button nzType="primary" (click)="onCreate()">+ Create Event</button>
+  </div>
+
+  <nz-spin [nzSpinning]="loading">
+    <nz-table [nzData]="displayed" nzBordered nzSize="middle" *ngIf="displayed.length > 0; else emptyBlock">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th (click)="toggleSort()" style="cursor: pointer">
+            Date
+            <span *ngIf="sortDir === 'asc'">▲</span>
+            <span *ngIf="sortDir === 'desc'">▼</span>
+          </th>
+          <th>Venue</th>
+          <th style="width: 200px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of displayed" class="table-row">
+          <td>
+            <a (click)="onView(e)">{{ e.title }}</a>
+            <div class="small-muted">
+              {{ e.description || '' | slice: 0: 80
+              }}{{ (e.description?.length ?? 0) > 80 ? '…' : '' }}
+            </div>
+          </td>
+          <td>{{ e.startAt | date: 'medium' }}</td>
+          <td>{{ e.venue?.name || '-' }}</td>
+          <td>
+            <button nz-button nzSize="small" (click)="onEdit(e)">Edit</button>
+            <button nz-button nzSize="small" nz-popconfirm nzPopconfirmTitle="Delete this event?"
+              (nzOnConfirm)="onDelete(e)">
+              Delete
+            </button>
+            <button nz-button nzSize="small" (click)="onView(e)">View</button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+
+    <ng-template #emptyBlock>
+      <nz-empty *ngIf="!loading" nzNotFoundContent="No events found">
+        <button nz-button nzType="primary" (click)="onCreate()">
+          Create your first event
+        </button>
+      </nz-empty>
+    </ng-template>
+
+
+  </nz-spin>
+</nz-card>

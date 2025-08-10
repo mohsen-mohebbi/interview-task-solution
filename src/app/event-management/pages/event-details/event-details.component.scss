@@ -1,0 +1,17 @@
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+
+  .left { flex: 1; }
+  .actions { display: flex; gap: 8px; }
+  h2 { margin: 0; }
+  .small-muted { color: #888; margin-top: 6px; }
+}
+.loading {
+  min-height: 220px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}

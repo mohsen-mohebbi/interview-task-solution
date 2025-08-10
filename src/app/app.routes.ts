@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import {LoginGuard} from './core/guards/login.guard';
-import {PrivatePagesGuard} from './core/guards/private-pages.guard';
+import { LoginGuard } from './core/guards/login.guard';
+import { PrivatePagesGuard } from './core/guards/private-pages.guard';
 
 export const APP_ROUTES: Routes = [
   {
@@ -32,7 +32,12 @@ export const APP_ROUTES: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [PrivatePagesGuard],
   },
-  {path: '', redirectTo: '/login', pathMatch: 'full'},
-  {path: '**', redirectTo: '/not-found', pathMatch: 'full'},
+  {
+    path: 'events',
+    loadChildren: () =>
+      import('../app/event-management/event-management.routes').then(m => m.EVENT_MANAGEMENT_ROUTES)
+  },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/not-found', pathMatch: 'full' },
 ];
 

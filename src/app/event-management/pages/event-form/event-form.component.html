@@ -1,0 +1,107 @@
+<nz-card [nzTitle]="isEdit ? 'Edit Event' : 'Create Event'">
+    <nz-spin [nzSpinning]="loading">
+        <form nz-form [formGroup]="form" (ngSubmit)="submit()">
+
+            <nz-form-item>
+                <nz-form-label nzSpan="6" nzRequired>Title</nz-form-label>
+                <nz-form-control nzSpan="18" nzErrorTip="Please enter a title">
+                    <input nz-input formControlName="title" placeholder="Event title" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label nzSpan="6">Description</nz-form-label>
+                <nz-form-control nzSpan="18">
+                    <textarea nz-input formControlName="description" rows="4"
+                        placeholder="Short description"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label nzSpan="6" nzRequired>Start Date & Time</nz-form-label>
+                <nz-form-control nzSpan="18" nzErrorTip="Please select start date/time">
+                    <nz-date-picker formControlName="startAt" nzShowTime style="width: 100%"></nz-date-picker>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label nzSpan="6">Timezone</nz-form-label>
+                <nz-form-control nzSpan="18">
+                    <input nz-input formControlName="timezone" placeholder="e.g. Europe/Paris or UTC" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- nested venue group -->
+            <div formGroupName="venue">
+                <nz-form-item>
+                    <nz-form-label nzSpan="6">Venue</nz-form-label>
+                    <nz-form-control nzSpan="18">
+                        <div nz-row nzGutter="8">
+                            <div nz-col nzSpan="8">
+                                <input nz-input formControlName="name" placeholder="Name" />
+                            </div>
+                            <div nz-col nzSpan="8">
+                                <input nz-input formControlName="address1" placeholder="Address" />
+                            </div>
+                            <div nz-col nzSpan="8">
+                                <input nz-input formControlName="city" placeholder="City" />
+                            </div>
+                        </div>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
+
+            <!-- Primary Image -->
+            <nz-form-item>
+                <nz-form-label nzSpan="6">Primary Image</nz-form-label>
+                <nz-form-control nzSpan="18">
+                    <nz-upload nzShowUploadList="false" [nzCustomRequest]="uploadPrimary.bind(this)" nzAccept="image/*">
+                        <!-- مهم: type="button" -->
+                        <button nz-button type="button">
+                            <i nz-icon nzType="upload"></i> Upload Primary
+                        </button>
+                    </nz-upload>
+
+                    <div class="preview" *ngIf="form.value.primaryImage">
+                        <img [src]="form.value.primaryImage" />
+                        <a class="remove-link" (click)="removePrimary()">Remove</a>
+                    </div>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- Cover Image -->
+            <nz-form-item>
+                <nz-form-label nzSpan="6">Cover Image</nz-form-label>
+                <nz-form-control nzSpan="18">
+                    <nz-upload nzShowUploadList="false" [nzCustomRequest]="uploadCover.bind(this)" nzAccept="image/*">
+                        <button nz-button type="button">
+                            <i nz-icon nzType="upload"></i> Upload Cover
+                        </button>
+                    </nz-upload>
+
+                    <div class="preview" *ngIf="form.value.coverImage">
+                        <img [src]="form.value.coverImage" />
+                        <a class="remove-link" (click)="removeCover()">Remove</a>
+                    </div>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label nzSpan="6">Public</nz-form-label>
+                <nz-form-control nzSpan="18">
+                    <nz-switch formControlName="isPublic"></nz-switch>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-control nzSpan="24" class="actions">
+                    <button nz-button nzType="primary" [disabled]="loading">{{ isEdit ? 'Update Event' : 'Create Event'
+                        }}</button>
+                    <button nz-button nzType="default" type="button" (click)="cancel()">Cancel</button>
+                </nz-form-control>
+            </nz-form-item>
+
+        </form>
+    </nz-spin>
+</nz-card>
