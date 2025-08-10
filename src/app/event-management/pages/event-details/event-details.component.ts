@@ -13,6 +13,7 @@ import { NzMessageModule, NzMessageService } from 'ng-zorro-antd/message';
 
 import { EventService } from '../../services/event.service';
 import { EventModel } from '../../models/event.model';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 @Component({
   standalone: true,
@@ -26,10 +27,11 @@ import { EventModel } from '../../models/event.model';
     NzTagModule,
     NzButtonModule,
     NzSpinModule,
-    NzMessageModule
+    NzMessageModule,
+    NzPopconfirmModule
   ],
   templateUrl: './event-details.component.html',
-  styleUrls: ['./event-details.component.scss']
+  styleUrls: ['./event-details.component.scss'],
 })
 export class EventDetailsComponent implements OnInit {
   event?: EventModel;
@@ -38,15 +40,14 @@ export class EventDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    public router: Router,
+    private router: Router,
     private eventService: EventService,
     private message: NzMessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.paramMap.get('id') ?? undefined;
-    console.log(this.id);
-    
+
     if (!this.id) {
       this.message.error('Missing event id');
       this.router.navigate(['/', 'events']);
@@ -66,18 +67,21 @@ export class EventDetailsComponent implements OnInit {
       error: () => {
         this.loading = false;
         this.message.error('Failed to load event');
-      }
+      },
     });
   }
 
   copyPublicLink(): void {
     if (!this.event) return;
     const url = `${location.origin}/events/${this.event.id}`;
-    navigator.clipboard?.writeText(url).then(() => {
-      this.message.success('Public link copied to clipboard');
-    }).catch(() => {
-      this.message.error('Could not copy link');
-    });
+    navigator.clipboard
+      ?.writeText(url)
+      .then(() => {
+        this.message.success('Public link copied to clipboard');
+      })
+      .catch(() => {
+        this.message.error('Could not copy link');
+      });
   }
 
   goEdit(): void {
@@ -96,7 +100,15 @@ export class EventDetailsComponent implements OnInit {
       },
       error: () => {
         this.message.error('Delete failed');
-      }
+      },
+    });
+  }
+
+
+  onDelete() {
+    if (!this.event) return;
+    this.eventService.remove(this.event!.id).subscribe(() => {
+      // no-op: subscription to events$ will update UI
     });
   }
 }

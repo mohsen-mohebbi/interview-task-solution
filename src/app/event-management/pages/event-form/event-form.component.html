@@ -1,4 +1,4 @@
-<nz-card [nzTitle]="isEdit ? 'Edit Event' : 'Create Event'">
+<nz-card class="form-card" [nzTitle]="isEdit ? 'Edit Event' : 'Create Event'">
     <nz-spin [nzSpinning]="loading">
         <form nz-form [formGroup]="form" (ngSubmit)="submit()">
 

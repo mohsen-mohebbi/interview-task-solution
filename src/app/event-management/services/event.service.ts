@@ -1,9 +1,7 @@
-
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { EventModel } from '../models/event.model';
 
 @Injectable({
@@ -20,6 +18,17 @@ export class EventService {
     }
 
     private init() {
+        const local = this.loadLocal();
+        console.log(local);
+        
+
+        if (local.length > 0) {
+            // اگر لوکال دیتا داشت، همونو استفاده کن و تمام
+            this.eventsSub.next(local);
+            return; // دیگه سمت mock.json نرو
+        }
+
+        // اگر لوکال خالی بود، از mock.json بخون
         this.http.get<any>(this.API).pipe(
             map(payload => this.extractEvents(payload)),
             map(list => list.map(r => this.normalize(r))),
@@ -28,11 +37,11 @@ export class EventService {
                 return of([]);
             })
         ).subscribe(remote => {
-            const local = this.loadLocal();
-            const merged = this.merge(remote, local);
-            this.eventsSub.next(merged);
+            this.eventsSub.next(remote);
+            this.saveLocal(remote); // ذخیره برای دفعات بعد
         });
     }
+
 
     private extractEvents(payload: any): any[] {
         if (!payload) return [];
@@ -83,7 +92,6 @@ export class EventService {
                 id: p.id ?? this.generateId(),
                 startAt: p.startAt ?? new Date().toISOString()
             }));
-
         } catch {
             return [];
         }
@@ -95,15 +103,6 @@ export class EventService {
         } catch (err) {
             console.warn('EventService: could not persist to localStorage', err);
         }
-    }
-
-    private merge(remote: EventModel[], local: EventModel[]): EventModel[] {
-        const map = new Map<string, EventModel>();
-        remote.forEach(r => map.set(r.id, r));
-        local.forEach(l => map.set(l.id, l)); // local overrides remote
-        const merged = Array.from(map.values());
-        merged.sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime());
-        return merged;
     }
 
     // Public API
@@ -119,17 +118,11 @@ export class EventService {
         return this.events$.pipe(map(list => list.find(x => x.id === id)));
     }
 
-    /**
-     * Create a new event.
-     * Note: we avoid declaring `id` twice in the same object literal.
-     * If partial.id exists we use it, otherwise we generate a new id.
-     */
     create(partial: Partial<EventModel>): Observable<EventModel> {
         const id = partial.id ?? this.generateId();
-        // build object: spread partial first, then explicitly set fields we want to ensure.
         const ev: EventModel = {
-            ...partial,          // spread partial first (may include many fields)
-            id,                  // ensure final id value (no duplicate key in the literal)
+            ...partial,
+            id,
             title: partial.title ?? 'Untitled event',
             startAt: partial.startAt ?? new Date().toISOString(),
             isPublic: typeof partial.isPublic === 'boolean' ? partial.isPublic : true,
@@ -172,6 +165,4 @@ export class EventService {
         this.saveLocal(list);
         return of(true);
     }
-
-
 }

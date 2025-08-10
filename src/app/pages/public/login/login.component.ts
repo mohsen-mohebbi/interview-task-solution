@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this._router.navigate(["/p/dashboard"]);
+          this._router.navigate(["/events"]);
         },
         complete: () => {
           this.isSubmitting.set(false);

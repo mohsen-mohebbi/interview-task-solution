@@ -1,3 +1,23 @@
+:host {
+  display: flex;
+  justify-content: center;
+  background-color: #212830;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 800px;
+  background-color: #2b3440;
+  color: #e0e0e0;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}
+
 .preview {
   margin-top: 8px;
   display: flex;
@@ -22,4 +42,21 @@
   display: flex;
   justify-content: flex-end;
   gap: 8px;
+}
+.ant-form-horizontal .ant-form-item-label{
+  color: #fff;
+}
+
+.ant-form-item-label{
+  text-align: left;
+  label{
+  color: #fff !important;
+  }
+}
+
+.form-label label{
+  color: #fff !important;
+}
+.ant-btn-primary{
+  margin-right: 5px;
 }

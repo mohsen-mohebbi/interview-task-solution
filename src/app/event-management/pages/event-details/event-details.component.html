@@ -1,32 +1,54 @@
-<nz-card *ngIf="!loading; else loadingBlock">
+<nz-card class="event-card" *ngIf="!loading; else loadingBlock">
   <div class="top">
     <div class="left">
       <h2>{{ event?.title }}</h2>
-      <div class="small-muted">{{ event?.description }}</div>
+      <div class="small-muted">{{ event?.description || 'No description provided.' }}</div>
     </div>
     <div class="actions">
       <button nz-button nzType="default" (click)="goEdit()">Edit</button>
+
       <button nz-button nzType="primary" (click)="copyPublicLink()" [disabled]="!event?.isPublic">Copy Public Link</button>
-      <button nz-button nzType="default" (click)="deleteEvent()">Delete</button>
+
+      <button
+        nz-button
+        nzType="default"
+        nz-popconfirm
+        nzPopconfirmTitle="Delete this event?"
+        (nzOnConfirm)="onDelete()"
+      >
+        Delete
+      </button>
     </div>
   </div>
 
-  <!-- <nz-image *ngIf="event?.coverImage" [nzSrc]="event?.coverImage" nzWidth="100%" [nzPreview]="true"></nz-image> -->
+  <div class="images-wrapper" *ngIf="event">
+    <img *ngIf="event.primaryImage" [src]="event.primaryImage" alt="Primary Image" />
+    <img *ngIf="event.coverImage" [src]="event.coverImage" alt="Cover Image" />
+    <div *ngIf="!event.primaryImage && !event.coverImage" class="placeholder-img">
+      No images available
+    </div>
+  </div>
 
-  <nz-descriptions nzTitle="Event details" nzBordered>
-    <nz-descriptions-item nzTitle="Date">
-      {{ event?.startAt | date: 'full' }} ({{ event?.timezone || 'UTC' }})
-    </nz-descriptions-item>
-    <nz-descriptions-item nzTitle="Venue">
-      {{ event?.venue?.name || '-' }} <div class="small-muted">{{ event?.venue?.address1 }}</div>
-    </nz-descriptions-item>
-    <nz-descriptions-item nzTitle="Visibility">
-      <nz-tag [nzColor]="event?.isPublic ? 'green' : 'red'">{{ event?.isPublic ? 'Public' : 'Private' }}</nz-tag>
-    </nz-descriptions-item>
-    <nz-descriptions-item nzTitle="Description" [nzSpan]="3">
-      <div>{{ event?.description || '-' }}</div>
-    </nz-descriptions-item>
-  </nz-descriptions>
+<nz-card class="event-info-card" nzTitle="Date & Time" [nzBordered]="true">
+  <p><strong>Date:</strong> {{ event?.startAt | date: 'fullDate' }}</p>
+  <p><strong>Time:</strong> {{ event?.startAt | date: 'shortTime' }} ({{ event?.timezone || 'UTC' }})</p>
+  <p *ngIf="event?.endAt"><strong>Ends At:</strong> {{ event?.endAt | date: 'short' }}</p>
+</nz-card>
+
+<nz-card class="event-info-card" nzTitle="Venue" [nzBordered]="true" *ngIf="event?.venue">
+  <p><strong>Name:</strong> {{ event?.venue?.name || '-' }}</p>
+  <p><strong>Address:</strong> {{ event?.venue?.address1 || '-' }}</p>
+  <p *ngIf="event?.venue?.city"><strong>City:</strong> {{ event?.venue?.city }}</p>
+</nz-card>
+
+<nz-card class="event-info-card" nzTitle="Visibility" [nzBordered]="true">
+  <nz-tag [nzColor]="event?.isPublic ? 'green' : 'red'">{{ event?.isPublic ? 'Public' : 'Private' }}</nz-tag>
+</nz-card>
+
+<nz-card class="event-info-card" nzTitle="Description" [nzBordered]="true">
+  <p>{{ event?.description || '-' }}</p>
+</nz-card>
+
 </nz-card>
 
 <ng-template #loadingBlock>

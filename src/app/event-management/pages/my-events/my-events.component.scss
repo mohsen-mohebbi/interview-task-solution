@@ -1,6 +1,24 @@
+:host {
+  display: flex;
+  justify-content: center;
+  background-color: #212830;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #e0e0e0;
+}
+.ant-card-head-title{
+  color: #fff;
+}
 .events-card {
-  max-width: 1100px;
-  margin: 24px auto;
+  width: 100%;
+  max-width: 800px;
+  background-color: #2b3440;
+  color: #e0e0e0;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
 }
 
 .toolbar {
@@ -19,10 +37,29 @@
 
 .search-input {
   width: 250px;
+  background-color: #39424a;
+  border: 1px solid #55606b;
+  color: #e0e0e0;
+}
+
+.search-input::placeholder {
+  color: #999;
 }
 
 .filter-select {
   width: 150px;
+  background-color: #39424a;
+  border: 1px solid #55606b;
+  color: #e0e0e0;
+  border-radius: 8px;
+}
+.ant-select-selector{
+  background-color: unset !important;
+  border: unset !important;
+}
+
+.nz-select-arrow {
+  color: #999 !important;
 }
 
 .small-muted {
@@ -30,6 +67,102 @@
   color: #999;
 }
 
-.table-row:hover {
-  background: #fafafa;
+/* جدول */
+nz-table {
+  background-color: #2b3440 !important;
+  border-radius: 8px;
+  color: #e0e0e0;
+}
+
+/* هدر جدول */
+nz-table thead tr {
+  background-color: #39424a !important;
+  color: #aab8c2 !important;
+}
+
+/* سلول های هدر */
+nz-table thead tr th {
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid #55606b !important;
+}
+
+/* ردیف‌های بدنه جدول */
+nz-table tbody tr {
+  background-color: #2b3440 !important;
+  transition: background-color 0.3s ease;
+  color: #e0e0e0;
+  border-bottom: 1px solid #55606b !important;
+}
+
+/* هاور روی ردیف‌ها */
+nz-table tbody tr:hover {
+  background-color: #3f4953 !important;
+  color: #fff !important;
+  td{
+    color: #212830 !important;
+  }
+}
+
+/* سلول‌ها */
+nz-table tbody tr td {
+  padding: 12px 8px !important;
+  color: #e0e0e0 !important;
+}
+
+/* دکمه‌ها */
+button[nz-button] {
+  background-color: #39424a !important;
+  color: #e0e0e0 !important;
+  border: 1px solid #55606b !important;
+  font-size: 0.85rem !important;
+  transition: background-color 0.3s ease !important;
+  // padding: 4px 10px !important;
+}
+
+.btn-events{
+  button{
+    margin-right: 6px;
+  }
+}
+button[nz-button]:hover:not(:disabled) {
+  background-color: #55606b !important;
+  border-color: #7ea9e1 !important;
+  color: #fff !important;
+  cursor: pointer !important;
+}
+
+button[nz-button][nzType='primary'] {
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+  color: white !important;
+}
+
+button[nz-button][nzType='primary']:hover:not(:disabled) {
+  filter: brightness(1.1) !important;
+}
+
+button[nz-button]:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+
+/* Popconfirm */
+.nz-popconfirm {
+  color: #e0e0e0 !important;
+  background-color: #39424a !important;
+  border-radius: 8px !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8) !important;
+}
+
+.nz-popconfirm-buttons button {
+  background-color: #39424a !important;
+  border: 1px solid #55606b !important;
+  color: #e0e0e0 !important;
+}
+
+.nz-popconfirm-buttons button:hover {
+  background-color: #55606b !important;
+  border-color: #7ea9e1 !important;
+  color: white !important;
 }

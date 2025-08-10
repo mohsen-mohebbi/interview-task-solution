@@ -1,17 +1,125 @@
+:host {
+  display: block;
+  background-color: #212830;
+  padding: 24px;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #e0e0e0;
+  overflow-y: auto;  /* فعال کردن اسکرول عمودی در صورت نیاز */
+}
+
+.event-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #2b3440;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.7);
+  color: #d0d0d0;
+}
+
+.images-wrapper {
+  display: flex;
+  gap: 16px;
+  margin: 16px 0;
+
+  img {
+    width: 50%;       /* دو تصویر کنار هم */
+    max-height: 160px; /* کوچکتر */
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.6);
+    border: 2px solid #3a4451;
+  }
+
+  .placeholder-img {
+    flex: 1;
+    color: #777;
+    font-style: italic;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 50px 0;
+  }
+}
+
+.event-info-card {
+  margin-bottom: 14px;
+  background-color: #2b3440;
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.7);
+  color: #d0d0d0;
+  p {
+    margin: 6px 0;
+    font-size: 0.9rem;
+  }
+
+  strong {
+    color: #a0aabb;
+  }
+}
+
 .top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 16px;
 
-  .left { flex: 1; }
-  .actions { display: flex; gap: 8px; }
-  h2 { margin: 0; }
-  .small-muted { color: #888; margin-top: 6px; }
+  .left {
+    flex: 1;
+    h2 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: #fff;
+      text-shadow: 0 0 3px rgba(0,0,0,0.8);
+    }
+    .small-muted {
+      color: #aaa;
+      margin-top: 6px;
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+
+    button[nz-button] {
+      background-color: #3a4451;
+      color: #e0e0e0;
+      border: 1px solid #4a5566;
+      font-size: 0.85rem;
+      transition: background-color 0.3s ease;
+
+      &:hover:not(:disabled) {
+        background-color: #556680;
+        border-color: #7ea9e1;
+        color: #fff;
+        cursor: pointer;
+      }
+    }
+
+    button[nz-button][nzType='primary'] {
+      background-color: #1890ff;
+      border-color: #1890ff;
+      color: white;
+
+      &:hover:not(:disabled) {
+        filter: brightness(1.1);
+      }
+    }
+
+    button[nz-button]:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
 }
+
 .loading {
-  min-height: 220px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

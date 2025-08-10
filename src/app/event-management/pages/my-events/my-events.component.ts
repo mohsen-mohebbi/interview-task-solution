@@ -52,10 +52,13 @@ export class MyEventsComponent implements OnInit {
     const search$ = this.search.valueChanges.pipe(startWith(''), debounceTime(300), distinctUntilChanged());
     const filter$ = this.filter.valueChanges.pipe(startWith(this.filter.value));
 
-    const events$ = this.eventService.getForOrg(this.activeOrgId).pipe(
-      startWith([]) // مهم: تا قبل از لود شدن دیتا، یه آرایه خالی بده
-    );
+    // const events$ = this.eventService.getForOrg(this.activeOrgId).pipe(
+    //   startWith([]) // مهم: تا قبل از لود شدن دیتا، یه آرایه خالی بده
+    // );
 
+    const events$ = this.eventService.getAll().pipe(startWith([]));
+
+    
     combineLatest([events$, search$, filter$])
       .pipe(
         map(([events, q, f]) => {
